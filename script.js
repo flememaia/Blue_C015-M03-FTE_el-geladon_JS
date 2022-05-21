@@ -117,15 +117,15 @@ async function findOnePaleta() {
         `
 }
 
-// findOnePaleta()
-
-
 
 //  1. Incluir Botão CADASTRAR no HTML => ao clicar abre o modal => onclick="abreModal()"
 
 // no script.js criar a função abreModal() => display: none => display: flex
+
+const modalElement =  document.querySelector("#overlay")
+
 function abrirModalCadastro(){
- // VAMOS COMPLETAR AQUI PROXIMA AULA
+   modalElement.style.display = "flex"
 }
 
 // 2. MODAL => inputs => style CSS
@@ -135,25 +135,27 @@ function abrirModalCadastro(){
 // 3. DENTRO DO MODAL => 
     // 3.1 fechar => onclick="fechaModal()" 
 function fecharModalCadastro(){
- // VAMOS COMPLETAR AQUI PROXIMA AULA
+    // js => fechaModal() => display: flex => display: none 
+   modalElement.style.display = "none"
 
 
 }
     // 3.2 CADASTRAR NOVA PALETA => onclick="createPaleta()" 
 
     // Create 
+
 async function createPaleta() {
- // VAMOS ARRUMAR AQUI PROXIMA AULA
 
-    paleta = {
-        "sabor": "Teste",
-        "descricao": "Quam vulputate dignissim suspendisse in est ante in nibh mauris.",
-        "foto": "./assets/images/doce-de-leite-com-doce-de-leite.png",
-        "preco": "12" 
-    }
+// js => createPaleta() => body => o valor digitado pelo usuário
+    const sabor =  document.getElementById("sabor").value
+    const preco = document.getElementById("preco").value
+    const descricao = document.getElementById("descricao").value
+    const foto = document.getElementById("foto").value
 
-    console.log(JSON.stringify(paleta))
+    const paleta = {sabor, preco, descricao, foto}
+    console.log("paleta dentro do create", paleta)
 
+    // + fetch API
     const response = await fetch(`${baseUrl}/create`, 
         {
             method: "post", // metodo HTTP 
@@ -165,10 +167,12 @@ async function createPaleta() {
     
     const novaPaleta = await response.json() // verificar o retorno API
     console.log("novaPaleta:", novaPaleta)
+
+    // + fechaModal 
+    fecharModalCadastro()
+    // chama novamente a rota GET ALL, pra renderizar todas as paletas, inclusive a nova criada. 
+    findAllPaletas() 
 }
 
-createPaleta()
 
-// js => createPaleta() => body => o valor digitado pelo usuário + fetch API + fechaModal 
-// js => fechaModal() => display: flex => display: none 
 

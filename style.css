@@ -134,7 +134,7 @@ html {
 
 .default-button {
   position: absolute;
-  /* top: 92px;
+  top: 92px;
   background-color: transparent;
   border: 2px solid #9400d3;
   padding: 0.4rem;
@@ -146,10 +146,10 @@ html {
   margin-top: 0.5rem;
   cursor: pointer;
   transition: all 0.3s ease-in-out;
-  font-size: 1rem; */
+  font-size: 1rem;
 }
 
-/* .default-button:hover {
+.default-button:hover {
   background-color: #9400d3;
   color: #ffffff;
 }
@@ -226,6 +226,7 @@ html {
   margin-bottom: .4rem;
   border-radius: .3rem;
 }
+/* // max-width: 100% */
 
 .modal-body div button {
   padding: .5rem;
@@ -247,4 +248,4 @@ html {
 .button-modal-create{
   display: flex;
   justify-content: flex-end;
-} */
+}
