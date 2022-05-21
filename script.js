@@ -6,12 +6,14 @@
 
 
 
-const baseUrl = "https://el-geladon-backend-by-ip.herokuapp.com/paletas"
+const baseUrl = "http://localhost:3000/paletas" // SERVIDOR LOCAL 
+// const baseUrl = "https://el-geladon-backend-by-ip.herokuapp.com/paletas"
 
 // Read ALL
 async function findAllPaletas() {
 
-    const response = await fetch(`${baseUrl}/find-paletas`) // https://el-geladon-backend-by-ip.herokuapp.com/paletas/find-paletas
+    // const response = await fetch(`${baseUrl}/find-paletas`) // https://el-geladon-backend-by-ip.herokuapp.com/paletas/find-paletas
+    const response = await fetch(`${baseUrl}/all-paletas`) // SERVIDOR LOCAL
     
     console.log("response:", response)
 
@@ -40,42 +42,25 @@ async function findAllPaletas() {
     //     `
     //     ) 
 
-    // *****Exibir a lista 
-    // 1. com o FOR
-    // for (let i = 0; i<paletas.length; i++){
-    //     // console.log(i, paletas[i]['descricao'])
+    const isEdit = true
 
-    //     // 2. Alteração que eu quero 
-    //         // acrescentar um porçao de código que representa cada card de cada paleta 
-
-    //         // pra inserir uma porção de código, podemos utilizar o insertAdjacentHTML, que recebe 2 argumentos
-    //     paletaDivElement.insertAdjacentHTML("beforeend", 
-    //     ` 
-    //     <div class="PaletaListaItem">
-    //         <div>
-    //             <div class="PaletaListaItem__sabor">${paletas[i].sabor}</div>
-    //             <div class="PaletaListaItem__preco">R$ ${paletas[i].preco},00</div>
-    //             <div class="PaletaListaItem__descricao">${paletas[i].descricao}</div>
-    //         </div>
-    //         <img class="PaletaListaItem__foto" src=${paletas[i].foto} alt="Paleta de Doce de Leite" />
-    //     </div>
-    //     `
-    //     ) 
-    // }
-
-    // 2. FOREACH => exemplo apostila // FOROF
-
-    // 3. MAP
-    paletas.map(function(batata) {
+    // *****Exibir uma lista 
+    paletas.map(function(paleta) {
+        console.log("id", paleta._id)
         return document.getElementById("paletaList").insertAdjacentHTML("beforeend", 
         `
-        <div class="PaletaListaItem">
+        <div class="PaletaListaItem" id="PaletaListaItem_${paleta._id}">
             <div>
-                <div class="PaletaListaItem__sabor">${batata.sabor}</div>
-                <div class="PaletaListaItem__preco">R$ ${batata.preco},00</div>
-                <div class="PaletaListaItem__descricao">${batata.descricao}</div>
+                <div id="paletaId" class="PaletaListaItem__id">${paleta._id}</div>
+                <div class="PaletaListaItem__sabor">${paleta.sabor}</div>
+                <div class="PaletaListaItem__preco">R$ ${paleta.preco},00</div>
+                <div class="PaletaListaItem__descricao">${paleta.descricao}</div>
             </div>
-            <img class="PaletaListaItem__foto" src=${batata.foto} alt="Paleta de ${batata.sabor}" />
+            <img class="PaletaListaItem__foto" src=${paleta.foto} alt="Paleta de ${paleta.sabor}" />
+            <div>
+                <button onclick="">APAGAR</button> 
+                <button onclick="abrirModal(${isEdit})">EDITAR</button> 
+            </div>
         </div>
         `
         )
@@ -84,8 +69,20 @@ async function findAllPaletas() {
 
 findAllPaletas()
 
+
+async function fetchOnePaleta (id){
+    const response = await fetch(`${baseUrl}/one-paleta/${id}`) // SEU SERVIDOR
+    const paleta = await response.json()
+    console.log("paleta:", paleta)
+
+    return paleta 
+}
+
+
 // Read One
 async function findOnePaleta() {
+    
+
 
     // 1. Selecionar o elemento html que eu quero modificar (seletores)
     const inputElement = document.querySelector("#idPaleta")
@@ -95,7 +92,10 @@ async function findOnePaleta() {
 
     console.log("id", id)
 
-    const response = await fetch(`${baseUrl}/find-paleta/${id}`) 
+    // const response = await fetch(`${baseUrl}/find-paleta/${id}`) 
+    const response = await fetch(`${baseUrl}/one-paleta/${id}`) // SEU SERVIDOR
+
+    
     
     const paleta = await response.json()
     console.log("paleta:", paleta)
@@ -124,8 +124,29 @@ async function findOnePaleta() {
 
 const modalElement =  document.querySelector("#overlay")
 
-function abrirModalCadastro(){
-   modalElement.style.display = "flex"
+function abrirModal(isEdit=false){
+    const paletaId = document.querySelector("#paletaId").innerText
+    console.log(paletaId)
+
+    console.log("isEdit", isEdit)
+
+    modalElement.style.display = "flex"
+
+//  TERNÁRIO = (CONDIÇÃO) ? TRUE : FALSE
+
+    const headerModal = document.querySelector("#header-modal")
+    console.log(headerModal)
+
+    // IF/ELSE 
+    // if(isEdit){
+    //     headerModal.innerText = "Atualizar uma paleta"
+    // }else{
+    //     headerModal.innerText = "Cadastrar uma paleta"
+    // }
+   
+    isEdit 
+        ? headerModal.innerText = "Atualizar uma paleta" // se a resposta for true
+        : headerModal.innerText = "Cadastrar uma paleta" // se a resposta for true
 }
 
 // 2. MODAL => inputs => style CSS
@@ -156,7 +177,8 @@ async function createPaleta() {
     console.log("paleta dentro do create", paleta)
 
     // + fetch API
-    const response = await fetch(`${baseUrl}/create`, 
+    // const response = await fetch(`${baseUrl}/create`, 
+    const response = await fetch(`${baseUrl}/create-paleta`, // SERIDOR LOCAL 
         {
             method: "post", // metodo HTTP 
             headers: {"Content-Type": "application/json"}, 
@@ -174,5 +196,60 @@ async function createPaleta() {
     findAllPaletas() 
 }
 
+// const id = "628834a8d394cbc6e614c7e1"
+
+async function updatePaleta(id){
 
 
+    const paletaAntes = await fetchOnePaleta (id)
+    console.log("paleta dentro do update antes", paletaAntes)
+
+    const paleta = {...paletaAntes, sabor: "Morango"}
+
+    // const paleta = {sabor: "Doce de Leite", preco: 12, descricao: "Nova descrição", foto: "indisponível" }
+    console.log("paleta dentro do update", paleta)
+
+    const response = await fetch(`${baseUrl}/update-paleta/${id}`, // SERIDOR LOCAL 
+    {
+        method: "put", // metodo HTTP 
+        headers: {"Content-Type": "application/json"}, 
+        mode: "cors", 
+        body: JSON.stringify(paleta) // o que queremos cadatrar na API             
+    }) 
+
+    const paletaAntesDaAtualizacao = await response.json() // verificar o retorno API
+    console.log("paletaAntesDaAtualizacao:", paletaAntesDaAtualizacao)
+
+    // chama novamente a rota GET ALL, pra renderizar todas as paletas, inclusive a nova criada. 
+    // findAllPaletas() 
+}
+
+// updatePaleta()
+
+// DELETE
+
+async function deleteOnePaleta (){
+
+    // 1. recuperar o id da paleta a ser deletada 
+    // não tem body 
+    // method: delete
+    // '/delete-paleta/:id' // ROTA SERVIDOR LOCAL 
+
+    const id = "62883cb1d394cbc6e614c80a"
+
+        const response = await fetch(`${baseUrl}/delete-paleta/${id}`, // SERIDOR LOCAL 
+    {
+        method: "delete", // metodo HTTP 
+        headers: {"Content-Type": "application/json"}, 
+        mode: "cors", 
+    }) 
+
+    const deleteResponse = await response.json() // verificar o retorno API
+    console.log("deleteResponse:", deleteResponse)
+
+    // chama novamente a rota GET ALL, pra renderizar todas as paletas, inclusive a nova criada. 
+    // findAllPaletas() 
+
+}
+
+deleteOnePaleta ()

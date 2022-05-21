@@ -6,19 +6,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>El Geladon</title>
     <link rel="stylesheet" href="style.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+      integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
 </head>
 <body>
     <div class="Home">
-        <!-- <h2 >Pesquisar Paleta</h2>
+        <h2 >Pesquisar Paleta</h2>
         <input type="text" id="idPaleta" placeholder="Digite o id da paleta escolhida">
-        <button onclick="findOnePaleta()">Pesquisar</button> -->
+        <button onclick="findOnePaleta()">Pesquisar</button>
 
         <div id="paletaEscolhida">
 
         </div>
 
         <section class="button-modal-create">
-          <button type="button" class="default-button" onclick="abrirModalCadastro()">Cadastrar Paleta</button>
+          <button type="button" class="default-button" onclick="abrirModal()">Cadastrar Paleta</button>
         </section>
 
       <section class="modal-overlay" id="overlay">
@@ -26,7 +33,7 @@
           <div class="modal">
 
               <div class="modal-header">
-                  <h2>Cadastrar uma paleta</h2>
+                  <h2 id="header-modal">Cadastrar uma paleta</h2>
                   <a onclick="fecharModalCadastro()" class="close-modal">x</a>
               </div>
 
